@@ -1,0 +1,25 @@
+﻿<Window x:Class="OneNetHelper.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OneNetHelper"
+        mc:Ignorable="d"
+        Title="OneNetHelper" Height="600" Width="1024" Closing="Window_Closing" ResizeMode="CanMinimize">
+    <Grid>
+        <Label Content="ApiURL地址：" HorizontalAlignment="Left" Margin="15,15,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="ApiUrl" HorizontalAlignment="Left" Height="22" Margin="105,17,0,0" TextWrapping="NoWrap" Text="http://api.heclouds.com/cmds" VerticalAlignment="Top" Width="280" FontSize="14"/>
+        <Label Content="请求方法：" HorizontalAlignment="Left" Margin="400,15,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="comb_method" HorizontalAlignment="Left" Margin="475,17,0,0" VerticalAlignment="Top" Width="80"/>
+        <Label Content="APIKey：" HorizontalAlignment="Left" Margin="580,15,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="ApiKey" HorizontalAlignment="Left" Height="22" Margin="640,17,0,0" TextWrapping="NoWrap" Text="HM9fbweWQ00NzRUsWDdgrPHJnB8=" VerticalAlignment="Top" Width="320" FontSize="14"/>
+        <Button x:Name="Btn_Add_Para" Content="添加参数" HorizontalAlignment="Left" Margin="395,60,0,0" VerticalAlignment="Top" Width="75" Click="Btn_Add_Para_Click"/>
+        <DataGrid x:Name="Dg_Req_Para" HorizontalAlignment="Left" Height="204" Margin="34,60,0,0" VerticalAlignment="Top" Width="335" RowHeaderWidth="0" ColumnWidth="*" CellEditEnding="Dg_Req_Para_CellEditEnding" BeginningEdit="Dg_Req_Para_BeginningEdit">
+        </DataGrid>
+        <TextBox x:Name="Text_Send" HorizontalAlignment="Left" Height="238" Margin="34,310,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="335" AcceptsReturn="True"/>
+        <Label Content="请求内容：" HorizontalAlignment="Left" Margin="15,278,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="Btn_Send_Req" Content="发送请求" HorizontalAlignment="Left" Margin="395,529,0,0" VerticalAlignment="Top" Width="75" Click="Btn_Send_Req_Click"/>
+        <Label Content="返回结果：" HorizontalAlignment="Left" Margin="580,57,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="Text_Receive" HorizontalAlignment="Left" Height="448" Margin="580,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="415"/>
+    </Grid>
+</Window>
