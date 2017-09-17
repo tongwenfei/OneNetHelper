@@ -38,6 +38,7 @@ namespace OneNetHelper
         public MainWindow()
         {
             InitializeComponent();
+            
             comb_method.Items.Add("POST");
             comb_method.Items.Add("GET");
             comb_method.Items.Add("PUT");
@@ -264,6 +265,58 @@ namespace OneNetHelper
             {
 
             }
+        }
+
+        private void Btn_Update_Click(object sender, RoutedEventArgs e)
+        {
+            string uuid = "";
+            String Device_id = "11393745";
+            Uri UpdateUri = new Uri("http://api.heclouds.com/devices/" + Device_id + "/datapoints?datastream_id=REPORT_STATE");
+            MyDelegate d = new MyDelegate(UpdateText);
+            Text_Receive.Text = "";
+
+
+
+
+            HttpWebRequest wbRequest = (HttpWebRequest)WebRequest.Create(UpdateUri);
+            WebHeaderCollection headers = wbRequest.Headers;
+            headers.Add("api-key:DLy5z6Bks=RibaGWFMJC7IDhC0A=");
+            wbRequest.Headers = headers;
+            wbRequest.ContentType = "application/json";
+            wbRequest.AllowAutoRedirect = false;
+            wbRequest.Timeout = 5000;
+            wbRequest.Method = "GET";
+            
+            try
+            {
+                
+               
+
+                HttpWebResponse response = (HttpWebResponse)wbRequest.GetResponse();
+
+                Stream myResponseStream = response.GetResponseStream();
+                StreamReader myStreamReader = new StreamReader(myResponseStream, Encoding.UTF8);
+                string retString = myStreamReader.ReadToEnd();
+                myStreamReader.Close();
+                myResponseStream.Close();
+                JObject jo = (JObject)JsonConvert.DeserializeObject(retString);
+                if (jo["errno"].ToString().Contains('0') && (jo["error"].ToString().Contains("succ")))
+                {
+                    JToken js = (JToken)jo["data"]["datastreams"][0]["datapoints"][0]["value"];
+                   // JToken jv = (JToken)js["datapoints"];
+                    this.Dispatcher.Invoke(d, js.ToString());
+                }
+
+                    //this.Dispatcher.Invoke(d, jo.ToString());
+
+                
+
+            }
+            catch
+            {
+
+            }
+           
         }
 
         private void Dg_Req_Para_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
