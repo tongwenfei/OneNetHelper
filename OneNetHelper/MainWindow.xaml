@@ -12,16 +12,24 @@
         <Label Content="请求方法：" HorizontalAlignment="Left" Margin="400,15,0,0" VerticalAlignment="Top"/>
         <ComboBox x:Name="comb_method" HorizontalAlignment="Left" Margin="475,17,0,0" VerticalAlignment="Top" Width="80"/>
         <Label Content="APIKey：" HorizontalAlignment="Left" Margin="580,15,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="ApiKey" HorizontalAlignment="Left" Height="22" Margin="640,17,0,0" TextWrapping="NoWrap" Text="HM9fbweWQ00NzRUsWDdgrPHJnB8=" VerticalAlignment="Top" Width="320" FontSize="14"/>
+        <TextBox x:Name="ApiKey" HorizontalAlignment="Left" Height="22" Margin="640,17,0,0" TextWrapping="NoWrap" Text="MM2MXwYR5AtDxS7TGCA1Ra0O6Dw=" VerticalAlignment="Top" Width="320" FontSize="14"/>
         <Button x:Name="Btn_Add_Para" Content="添加参数" HorizontalAlignment="Left" Margin="395,60,0,0" VerticalAlignment="Top" Width="75" Click="Btn_Add_Para_Click"/>
         <DataGrid x:Name="Dg_Req_Para" HorizontalAlignment="Left" Height="204" Margin="34,60,0,0" VerticalAlignment="Top" Width="335" RowHeaderWidth="0" ColumnWidth="*" CellEditEnding="Dg_Req_Para_CellEditEnding" BeginningEdit="Dg_Req_Para_BeginningEdit">
         </DataGrid>
-        <TextBox x:Name="Text_Send" HorizontalAlignment="Left" Height="238" Margin="34,310,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="335" AcceptsReturn="True"/>
+        <TextBox x:Name="Text_Send" HorizontalAlignment="Left" Height="238" Margin="34,310,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="335" AcceptsReturn="True" IsReadOnly="True"/>
         <Label Content="请求内容：" HorizontalAlignment="Left" Margin="15,278,0,0" VerticalAlignment="Top"/>
         <Button x:Name="Btn_Send_Req" Content="发送请求" HorizontalAlignment="Left" Margin="395,529,0,0" VerticalAlignment="Top" Width="75" Click="Btn_Send_Req_Click"/>
         <Label Content="返回结果：" HorizontalAlignment="Left" Margin="580,57,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="Text_Receive" HorizontalAlignment="Left" Height="448" Margin="580,100,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="415"/>
         
         <Button x:Name="Btn_Update" Content="更新数据" HorizontalAlignment="Left" Margin="395,200,0,0" VerticalAlignment="Top" Width="75" Click="Btn_Update_Click" />
+        <ComboBox x:Name="cmd_table" HorizontalAlignment="Left" SelectedIndex="0" Margin="378,310,0,0" VerticalAlignment="Top" Width="192">
+            <ComboBoxItem x:Name="Get_Location" Content="1.立即定位"/>
+            <ComboBoxItem x:Name="Activate_Devices" Content="2.设备激活"/>
+            <ComboBoxItem x:Name="Devices_Shutdown" Content="3.远程关机"/>
+            <ComboBoxItem x:Name="Devices_Reboot" Content="4.远程重启"/>
+            <ComboBoxItem x:Name="Devices_Ring" Content="5.远程响铃"/>
+            <ComboBoxItem x:Name="Devices_Upgrade" Content="6.远程升级"/>
+        </ComboBox>
     </Grid>
 </Window>

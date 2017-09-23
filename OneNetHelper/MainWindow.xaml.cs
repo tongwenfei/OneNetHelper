@@ -31,14 +31,19 @@ namespace OneNetHelper
         public DataRow dr;
         public String req_content;
         public Thread req_thread;
+        public Thread Update_thread;
         delegate void MyDelegate(String text);
         public Uri uri;
         public String APIKEY;
         public String HostName,LastVaule;
+        JObject CMDTABLE = new JObject();
         public MainWindow()
         {
             InitializeComponent();
-            
+            CMDTABLE["msgType"] = 0;
+            CMDTABLE["cmdType"] = 1;
+            CMDTABLE["SN"] = "102000217340000224";
+           
             comb_method.Items.Add("POST");
             comb_method.Items.Add("GET");
             comb_method.Items.Add("PUT");
@@ -74,15 +79,69 @@ namespace OneNetHelper
 
         private void Btn_Add_Para_Click(object sender, RoutedEventArgs e)
         {
-            AddTable AddWindow = new AddTable();
-            AddWindow.Owner = this;
-            AddWindow.ChangeTextEvent += new ChangeTextHandler(frm_ChangeTextEvent);
+            AddTable AddWindow = new AddTable
+            {
+                Owner = this
+            };
+            AddWindow.ChangeTextEvent += new ChangeTextHandler(Frm_ChangeTextEvent);
             AddWindow.Show();
         }
 
         private void Btn_Send_Req_Click(object sender, RoutedEventArgs e)
         {
-            req_content = Text_Send.Text;
+            switch(cmd_table.SelectedIndex)
+            {
+                case 0:
+                    {
+                        CMDTABLE.RemoveAll();
+                        CMDTABLE["msgType"] = 0;
+                        CMDTABLE["cmdType"] = 1;
+                        CMDTABLE["SN"] = "102000217340000224";
+                    }
+                    break;
+                case 1:
+                    {
+                        CMDTABLE.RemoveAll();
+                        CMDTABLE["msgType"] = 0;
+                        CMDTABLE["cmdType"] = 2;
+                        CMDTABLE["SN"] = "102000217340000224";
+                    }
+                    break;
+                case 2:
+                    {
+                        CMDTABLE.RemoveAll();
+                        CMDTABLE["msgType"] = 0;
+                        CMDTABLE["cmdType"] = 3;
+                        CMDTABLE["SN"] = "102000217340000224";
+                    }
+                    break;
+                case 3:
+                    {
+                        CMDTABLE.RemoveAll();
+                        CMDTABLE["msgType"] = 0;
+                        CMDTABLE["cmdType"] = 4;
+                        CMDTABLE["SN"] = "102000217340000224";
+                    }
+                    break;
+                case 4:
+                    {
+                        CMDTABLE.RemoveAll();
+                        CMDTABLE["msgType"] = 0;
+                        CMDTABLE["cmdType"] = 5;
+                        CMDTABLE["SN"] = "102000217340000224";
+                    }
+                    break;
+                case 5:
+                    {
+                        CMDTABLE.RemoveAll();
+                        CMDTABLE["msgType"] = 0;
+                        CMDTABLE["cmdType"] = 6;
+                        CMDTABLE["SN"] = "102000217340000224";
+                    }
+                    break;
+            }
+            req_content = CMDTABLE.ToString();
+            Text_Send.Text = req_content;
             String uri_tmp= ApiUrl.Text;
             HostName = ApiUrl.Text;
             if (req_para.Rows.Count>0)
@@ -223,7 +282,7 @@ namespace OneNetHelper
             Text_Receive.Text +="\r\n"+ DateTime.Now.ToString()+"\r\n";
         }
 
-        void frm_ChangeTextEvent(string Para_Name, string Para_Vaule)
+        void Frm_ChangeTextEvent(string Para_Name, string Para_Vaule)
         {
             bool reapet = false;
             for (int i = 0; i < req_para.Rows.Count; i++)
@@ -269,11 +328,24 @@ namespace OneNetHelper
 
         private void Btn_Update_Click(object sender, RoutedEventArgs e)
         {
-            string uuid = "";
+           
+            if(Update_thread==null|| Update_thread.IsAlive==false)
+            {
+
+                Text_Receive.Text = String.Empty;
+                Update_thread = new Thread(UpdateHttp);
+                Update_thread.Start();
+            }
+            
+           
+        }
+
+        private void UpdateHttp()
+        {
             String Device_id = "11393745";
             Uri UpdateUri = new Uri("http://api.heclouds.com/devices/" + Device_id + "/datapoints?datastream_id=REPORT_STATE");
             MyDelegate d = new MyDelegate(UpdateText);
-            Text_Receive.Text = "";
+            
 
 
 
@@ -286,11 +358,11 @@ namespace OneNetHelper
             wbRequest.AllowAutoRedirect = false;
             wbRequest.Timeout = 5000;
             wbRequest.Method = "GET";
-            
+
             try
             {
-                
-               
+
+
 
                 HttpWebResponse response = (HttpWebResponse)wbRequest.GetResponse();
 
@@ -303,20 +375,23 @@ namespace OneNetHelper
                 if (jo["errno"].ToString().Contains('0') && (jo["error"].ToString().Contains("succ")))
                 {
                     JToken js = (JToken)jo["data"]["datastreams"][0]["datapoints"][0]["value"];
-                   // JToken jv = (JToken)js["datapoints"];
-                    this.Dispatcher.Invoke(d, js.ToString());
+                    // JToken jv = (JToken)js["datapoints"];
+                    String tmp_str = jo["data"]["datastreams"][0]["datapoints"][0]["at"].ToString()+"\r\n";
+                    tmp_str += js.ToString();
+                   
+                    this.Dispatcher.Invoke(d, tmp_str);
                 }
 
-                    //this.Dispatcher.Invoke(d, jo.ToString());
+                //this.Dispatcher.Invoke(d, jo.ToString());
 
-                
+
 
             }
             catch
             {
-
+                this.Dispatcher.Invoke(d, "请求超时");
             }
-           
+            Update_thread.Abort();
         }
 
         private void Dg_Req_Para_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
